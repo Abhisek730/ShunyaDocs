@@ -1,0 +1,53 @@
+## Core classes 
+- `Mediator` 
+    -  centralizes communication between different modules, enabling them to interact without directly referencing each other
+- `ActionEvent`
+     - provides a centralized mechanism to listen for specified DOM events and emit them with associated data, enabling decoupled event-driven architectures
+    - Takes event config as parameter 
+- `ActionEngine`
+    -  facilitates execution of sequential or parallel flows based on structured configurations.
+    - It offers a built-in logging mechanism to capture process-specific logs, ensuring traceability and easy debugging.
+    - Through its schema system, the class provides a means for input validation and offers potential for building rule-based interfaces.
+- `ActionEntity` - 
+    - A class of methods, allowing crud operations on a js object.		
+    - When initiated as an Instance, it's acts like a active / live data store for the app, it is initalised with.		
+    - Acts as an interface to external Storage:		
+- `AcionRouter`
+    - allows web applications to switch between different views or components without a full page reload
+
+
+## App startup 
+- Index.html loaded 
+- styles loaded
+- app.js script loaded ( root file )    
+- Instance of Mediator class created 
+- Instances of ActionEngine, Evnet class created using `registerclass` metod of Mediator 
+```javascript 
+import { mediator } from './mediator.js';
+import { actionEvent } from './actionEvent.js';
+import { actionEngine } from './actionEngine.js';
+
+// Register the classes with the mediator
+mediator.registerClass('ActionEvent', actionEvent);
+mediator.registerClass('ActionEngine', actionEngine);
+
+// Now you can use any method across the classes via the mediator.
+```
+- ActionEngine instance created with classes config file 
+- ActionEvent instance created with eventConfig file 
+- Engine.addFlow method run with flowConfigObject
+- Engine.runFlow(routingFlow) executed
+
+
+## Flow 
+### Routing-flow 
+- `event`- pageLoad
+- `action` - loadPageData
+- `Flow `
+    - `Router.loadRoutes` method executed and extracts url form address bar
+    - `Route.matchRoutes` method finds mathing url in Routes config 
+    - if a url is matched 
+        - `Routes.renderComponent` method renders and inject specified component one by one in dom
+        - `Router.LoadStyles` method loads all the stylesheet corresponsing to the url 
+        -  page loaded 
+        - next flow executed as per routes config 
